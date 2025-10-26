@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Real-Time Inventory Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Inventory & Sales console</h1>
+    <form id="saleForm">
+        <h2>Record a Sale</h2>
+        <input type="text" id="saleSku" placeholder="Product SKU" required>
+        <input type="number" id="saleQuantity" placeholder="Quantity Sold" min="1" required>
+        <button type="submit">Process Sale</button>
+        <div id="message" ></div>
+    </form>
+    <h2>Current Stock Levels</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>SKU</th>
+            <th>Price</th>
+            <th>Stock Quantity</th>
+        </tr>
+        </thead>
+        <tbody id="inventoryTableBody">
+        </tbody>
+    </table>
+</div>
+<script src="js/app.js"></script>
+
+</body>
+</html>
