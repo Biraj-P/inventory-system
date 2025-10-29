@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.inventoryapp</groupId>
-	<artifactId>inventory-system</artifactId>
+	<artifactId>Smartventory</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>inventory-system</name>
 	<description>Inventory System and Sales Dashboard using Spring Boot</description>
