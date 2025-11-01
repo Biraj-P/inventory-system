@@ -7,6 +7,7 @@ import com.inventoryapp.inventory_system.exception.ProductNotFoundException;
 import com.inventoryapp.inventory_system.model.Product;
 import com.inventoryapp.inventory_system.repository.ProductRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import java.util.List;
 public class InventoryServiceImpl implements InventoryService{
     // DIP: Depend on the abstraction (ProductRepository)
     private final ProductRepository productRepository;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     //Industry standard: Constructor Injection (preferred over @Autowired fields)
-    public InventoryServiceImpl(ProductRepository productRepository) {
+    public InventoryServiceImpl(ProductRepository productRepository, SimpMessagingTemplate simpMessagingTemplate) {
         this.productRepository = productRepository;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @Override
@@ -66,8 +69,13 @@ public class InventoryServiceImpl implements InventoryService{
         //3. Update the stock quantity
         product.setStockQuantity(product.getStockQuantity() - saleRequest.getQuantitySold());
 
-        //4. Save and return
-        return productRepository.save(product);
+        //4. Save the updated product to the database
+        Product updatedProduct = productRepository.save(product);
+
+        //5. Notify clients about the stock update via WebSocket
+        // Broadcast the updated product to all clients subscribed to the /topic/inventory-updates topic
+        simpMessagingTemplate.convertAndSend("/topic/inventory-updates", updatedProduct);
+        return updatedProduct;
     }
 
     @Override
